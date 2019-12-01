@@ -1,22 +1,84 @@
-.App {
-  text-align: center;
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
 }
 
-.App-logo {
-  height: 40vmin;
+html {
+    font-size: 62.5%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+body {
+    box-sizing: border-box;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    color: white;
+    padding: 3rem;
+    background-color: rgba(47, 44, 216);
+    font-size: 2.4rem;
 }
 
-.App-link {
-  color: #09d3ac;
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+.navbar {
+    margin-bottom: 4rem;
+}
+
+.navbar__links {
+    float: right;
+}
+
+.navbar__links li {
+    float: left;
+    display: inline-block;
+    margin-left: 2rem;
+}
+
+.navbar__links a {
+    color: white;
+}
+
+.navbar__logo {
+    display: inline-block;
+    font-size: 3.2rem;
+}
+
+.exchange-form {
+    font-size: 2rem;
+    color: black;
+    background-color: #fff;
+    border-radius: 5px;
+    width: 60rem;
+    margin: 0 auto;
+    padding: 3rem;
+}
+
+.exchange-form h3 {
+    font-size: 3.2rem;
+}
+
+.exchange-form button {
+    font-size: 2rem;
+}
+
+.exchange-form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-control {
+    font-size: 1.5rem;
+}
+
+legend {
+    font-size: 2rem;
 }
