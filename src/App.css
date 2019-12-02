@@ -57,7 +57,7 @@ li {
     color: black;
     background-color: #fff;
     border-radius: 5px;
-    width: 60rem;
+    max-width: 60rem;
     margin: 0 auto;
     padding: 3rem;
 }
@@ -81,4 +81,10 @@ li {
 
 legend {
     font-size: 2rem;
+}
+
+@media (max-width: 830px) {
+    .navbar__links {
+        display: none;
+    }
 }
