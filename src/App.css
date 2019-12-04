@@ -28,6 +28,10 @@ body {
     font-size: 2.4rem;
 }
 
+main {
+    padding-bottom: 8rem;
+}
+
 button {
     width: 100%;
     height: 5rem;
