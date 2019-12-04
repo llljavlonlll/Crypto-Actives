@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./components/Header";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { Form, FormGroup, Label, Input } from "reactstrap";
 import axios from "axios";
 import "./App.css";
 
@@ -13,7 +13,7 @@ class App extends React.Component {
         btcRateUZS: null,
         err: null,
         wallet: "",
-        currency: "USD",
+        currency: "UZS",
         paymentType: "cash"
     };
 
@@ -70,6 +70,10 @@ class App extends React.Component {
     //     const value = event.target.value;
     // };
 
+    onHandleSubmit = event => {
+        event.preventDefault();
+    };
+
     render() {
         return (
             <React.Fragment>
@@ -86,14 +90,16 @@ class App extends React.Component {
                                         value={this.state.currency}
                                         onChange={this.onChangeCurrency}
                                     >
+                                        <option value="UZS">UZS - So'm</option>
                                         <option value="USD">
                                             USD - AQSh Dollar
                                         </option>
-                                        <option value="UZS">UZS - So'm</option>
                                     </Input>
                                 </FormGroup>
                                 <FormGroup tag="fieldset">
-                                    <legend>To'lov turi</legend>
+                                    <Label className="tolov-turi">
+                                        To'lov turi:
+                                    </Label>
                                     <FormGroup check inline>
                                         <Label check>
                                             <Input
@@ -121,7 +127,7 @@ class App extends React.Component {
                                     <Label>Miqdori</Label>
                                     <Input
                                         type="text"
-                                        placeholder="Misol: 150"
+                                        placeholder="Misol: 1500000"
                                         value={this.state.toBeExchanged}
                                         onChange={this.onChangeAmount}
                                     ></Input>
@@ -131,7 +137,7 @@ class App extends React.Component {
                             <FormGroup>
                                 <Label>Kriptovalyuta turi</Label>
                                 <Input type="select">
-                                    <option value="BTC">Bitcoin</option>
+                                    <option value="BTC">BTC - Bitcoin</option>
                                     {/*
                                     <option value="ETH">Ethereum</option>
                                     <option value="LTC">Litecoin</option>
@@ -149,10 +155,20 @@ class App extends React.Component {
                             </FormGroup>
 
                             <p>
-                                Siz "{this.state.receiveAmount.toFixed(6)}{" "}
-                                {this.state.receiveCryptocurrency}" olasiz
+                                Siz{" "}
+                                <span className="total-amount">
+                                    {this.state.receiveAmount.toFixed(6)}{" "}
+                                    {this.state.receiveCryptocurrency}
+                                </span>{" "}
+                                olasiz
                             </p>
-                            <Button>Submit</Button>
+
+                            <button
+                                onClick={this.onHandleSubmit}
+                                className="btn btn-primary"
+                            >
+                                Almashtirish
+                            </button>
                         </Form>
                     </div>
                 </main>
