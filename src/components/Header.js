@@ -3,7 +3,8 @@ import React from "react";
 export default function Header() {
     return (
         <nav className="navbar">
-            <p className="navbar__logo">Crypto Actives</p>
+            {/*<p className="navbar__logo">Crypto Actives</p>*/}
+            <img src="../images/hero_logo.png" alt="logo" id="hero_logo"></img>
             <ul className="navbar__links">
                 <li>
                     <a href="/#">Home</a>
