@@ -62,6 +62,11 @@ li {
     height: 4rem;
 }
 
+#mobile_logo {
+    height: 8rem;
+    display: none;
+}
+
 .navbar {
     padding: 3rem;
     margin-bottom: 4rem;
@@ -126,6 +131,11 @@ li {
     font-weight: 700;
 }
 
+.total {
+    padding: 2rem 0;
+    text-align: right;
+}
+
 .footer {
     background: rgb(29, 27, 141);
     text-align: center;
@@ -138,10 +148,10 @@ li {
     font-size: 1.6rem;
 }
 
-@media (max-width: 830px) {
+@media (max-width: 680px) {
     .navbar {
-        margin-bottom: 3rem;
-        padding: 1.5rem;
+        margin-bottom: 0;
+        padding: 3rem 1.5rem;
     }
 
     .navbar__links {
@@ -155,5 +165,13 @@ li {
     .exchange-form {
         padding: 2rem;
         margin-bottom: 3rem;
+    }
+
+    #hero_logo {
+        display: none;
+    }
+
+    #mobile_logo {
+        display: inline-block;
     }
 }

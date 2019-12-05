@@ -178,7 +178,7 @@ class App extends React.Component {
                                     ></Input>
                                 </FormGroup>
 
-                                <p>
+                                <p className="total">
                                     Siz{" "}
                                     <span className="total-amount">
                                         {this.state.receiveAmount.toFixed(6)}{" "}
