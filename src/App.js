@@ -13,7 +13,7 @@ class App extends React.Component {
         amountToExchange: "",
         btcRateUSD: null,
         btcRateUZS: null,
-        wmzToUZS: 10500,
+        wmzToUZS: 9600,
         err: null,
         walletNum: "",
         currency: "UZS",
