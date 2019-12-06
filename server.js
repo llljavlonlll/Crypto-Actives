@@ -27,7 +27,7 @@ app.post("/send-order", async (req, res) => {
         // send mail with defined transport object
         let info = await transporter.sendMail({
             from: '"Crypto Actives" <javlon@encompass.uz>', // sender address
-            to: "butabaev.o@gmail.com, jbutabaev@gmail.com", // list of receivers
+            to: "butabaev.o@gmail.com, jbutabaev@gmail.com, trader_188@list.ru", // list of receivers
             subject: "Yangi Buyurtma", // Subject line
             html: ` <h1>Yangi Buyurtma</h1>
                     <h3>Buyurtma ma'lumotlari</h3>
