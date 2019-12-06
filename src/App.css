@@ -43,6 +43,7 @@ button {
     border: none;
     border-bottom: 5px solid rgb(29, 27, 141);
     border-radius: 5px;
+    padding: 0.5rem;
 }
 
 .btn-primary:hover {
@@ -146,6 +147,10 @@ li {
 .footer p {
     margin: auto;
     font-size: 1.6rem;
+}
+
+.spinner {
+    margin: 0 auto;
 }
 
 @media (max-width: 680px) {

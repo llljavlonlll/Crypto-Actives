@@ -4,6 +4,7 @@ import { Form, FormGroup, Label, Input } from "reactstrap";
 import axios from "axios";
 import "./App.css";
 import Footer from "./components/Footer";
+import ReactLoading from "react-loading";
 
 class App extends React.Component {
     initialState = {
@@ -144,7 +145,7 @@ class App extends React.Component {
                 <Header />
                 <main>
                     <div className="exchange-form">
-                        <Form onSubmit={this.onSubmit}>
+                        <Form onSubmit={this.onSubmit} autoComplete="off">
                             <div style={{ marginBottom: "2rem" }}>
                                 <h3>Berasiz</h3>
                                 <FormGroup>
@@ -278,7 +279,16 @@ class App extends React.Component {
                             </div>
 
                             <button className="btn btn-primary">
-                                Almashtirish
+                                {this.state.submitLoading ? (
+                                    <ReactLoading
+                                        color={"white"}
+                                        type={"spin"}
+                                        width={"6%"}
+                                        className="spinner"
+                                    />
+                                ) : (
+                                    "Almashtirish"
+                                )}
                             </button>
                         </Form>
                     </div>
