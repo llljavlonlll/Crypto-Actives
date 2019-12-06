@@ -22,7 +22,7 @@ class App extends React.Component {
         paymentMethod: "cash",
         phone: "",
         submitLoading: false,
-        modalIsOpen: true
+        modalIsOpen: false
     };
 
     state = this.initialState;
