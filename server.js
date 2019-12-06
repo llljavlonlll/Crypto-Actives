@@ -28,18 +28,24 @@ app.post("/send-order", async (req, res) => {
         let info = await transporter.sendMail({
             from: '"Crypto Actives" <javlon@encompass.uz>', // sender address
             to: "butabaev.o@gmail.com, jbutabaev@gmail.com", // list of receivers
-            subject: "Yangi Zakaz", // Subject line
-            html: ` <h1>Yangi Zakaz</h1>
-                    <h3>Telefon raqami: ${req.body.phone}</h3>
+            subject: "Yangi Buyurtma", // Subject line
+            html: ` <h1>Yangi Buyurtma</h1>
+                    <h3>Buyurtma ma'lumotlari</h3>
                     <ul>
+                        <li>Telefon raqami: ${req.body.phone}</li>
                         <li>To'lov valyutasi: ${req.body.currency}</li>
                         <li>To'lov turi: ${req.body.paymentMethod}</li>
                         <li><strong>To'lov miqdori: ${req.body.amountToExchange}</strong></li>
                         <li>Istalgan valyutasi: ${req.body.exchangeCurrency}</li>
                         <li><strong>Hamyon raqami: ${req.body.walletNum}</strong></li>
-                        <li>BTC-UZS kursi: UZS ${req.body.btcRateUZS}</li>
-                        <li>BTC-USD kursi: USD ${req.body.btcRateUSD}</li>
                         <li></strong>Umumiy summa: ${req.body.receiveAmount} ${req.body.exchangeCurrency}</strong></li>
+                    </ul>
+                    <br><br><br><hr><br><br>
+                    <h3>Buyurtma berilgan vaqtdagi kurslar</h3>
+                    <ul>
+                        <li>BTC-UZS kursi: 1 BTC - ${req.body.btcRateUZS} UZS</li>
+                        <li>BTC-USD kursi: 1 BTC - ${req.body.btcRateUSD} USD</li>
+                        <li>WMZ-UZS kursi: 1 WMZ - ${req.body.wmzToUZS}</li>
                     </ul>`
         });
 

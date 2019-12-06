@@ -136,6 +136,7 @@ class App extends React.Component {
                 walletNum: this.state.walletNum,
                 btcRateUZS: this.state.btcRateUZS,
                 btcRateUSD: this.state.btcRateUSD,
+                wmzToUZS: this.state.wmzToUZS,
                 receiveAmount: this.state.receiveAmount
             })
             .then(res => {
