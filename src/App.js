@@ -13,6 +13,7 @@ class App extends React.Component {
         amountToExchange: "",
         btcRateUSD: null,
         btcRateUZS: null,
+        wmzToUZS: 10500,
         err: null,
         walletNum: "",
         currency: "UZS",
@@ -20,6 +21,7 @@ class App extends React.Component {
         phone: "",
         submitLoading: false
     };
+
     state = this.initialState;
 
     componentDidMount() {
@@ -40,12 +42,15 @@ class App extends React.Component {
 
     onChangeAmount = event => {
         const value = event.target.value;
-        const receiveAmount =
-            (parseFloat(this.state.amountToExchange) /
-                (value === "USD"
-                    ? this.state.btcRateUSD
-                    : this.state.btcRateUZS)) *
-                0.92 || 0;
+        let receiveAmount = null;
+
+        if (this.state.exchangeCurrency === "BTC") {
+            receiveAmount =
+                (parseFloat(value) / this.state.btcRateUZS) * 0.92 || 0;
+        } else if (this.state.exchangeCurrency === "WMZ") {
+            receiveAmount =
+                (parseFloat(value) / this.state.wmzToUZS) * 0.92 || 0;
+        }
 
         this.setState({
             amountToExchange: value,
@@ -61,18 +66,23 @@ class App extends React.Component {
     };
 
     onChangeCurrency = event => {
-        const value = event.target.value;
-        const receiveAmount =
-            (parseFloat(this.state.amountToExchange) /
-                (value === "USD"
-                    ? this.state.btcRateUSD
-                    : this.state.btcRateUZS)) *
-                0.92 || 0;
-
-        this.setState({
-            currency: value,
-            receiveAmount
-        });
+        // const value = event.target.value;
+        // let receiveAmount = null;
+        // if (this.state.exchangeCurrency === "BTC") {
+        //     receiveAmount =
+        //         (parseFloat(this.state.amountToExchange) /
+        //             this.state.btcRateUZS) *
+        //             0.92 || 0;
+        // } else if (this.state.exchangeCurrency === "WMZ") {
+        //     receiveAmount =
+        //         (parseFloat(this.state.amountToExchange) /
+        //             this.state.wmzToUZS) *
+        //             0.92 || 0;
+        // }
+        // this.setState({
+        //     currency: value,
+        //     receiveAmount
+        // });
     };
 
     onChangePhone = event => {
@@ -84,7 +94,19 @@ class App extends React.Component {
 
     onChangeExchangeCurrency = event => {
         const value = event.target.value;
-        const receiveAmount = 0;
+        let receiveAmount = null;
+
+        if (value === "BTC") {
+            receiveAmount =
+                (parseFloat(this.state.amountToExchange) /
+                    this.state.btcRateUZS) *
+                    0.92 || 0;
+        } else if (value === "WMZ") {
+            receiveAmount =
+                (parseFloat(this.state.amountToExchange) /
+                    this.state.wmzToUZS) *
+                    0.92 || 0;
+        }
 
         this.setState({
             exchangeCurrency: value,
@@ -237,7 +259,12 @@ class App extends React.Component {
                                     <Label>Hamyon raqami</Label>
                                     <Input
                                         type="text"
-                                        placeholder="Misol:  1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2"
+                                        placeholder={`Misol:  ${
+                                            this.state.exchangeCurrency ===
+                                            "BTC"
+                                                ? "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2"
+                                                : "Z106185125514"
+                                        }`}
                                         value={this.state.walletNum}
                                         onChange={this.onChangeWallet}
                                         required
