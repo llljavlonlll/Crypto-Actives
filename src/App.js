@@ -1,10 +1,12 @@
 import React from "react";
-import Header from "./components/Header";
 import { Form, FormGroup, Label, Input } from "reactstrap";
-import axios from "axios";
-import "./App.css";
-import Footer from "./components/Footer";
 import ReactLoading from "react-loading";
+import Modal from "react-modal";
+import axios from "axios";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+
+import "./App.css";
 
 class App extends React.Component {
     initialState = {
@@ -19,7 +21,8 @@ class App extends React.Component {
         currency: "UZS",
         paymentMethod: "cash",
         phone: "",
-        submitLoading: false
+        submitLoading: false,
+        modalIsOpen: true
     };
 
     state = this.initialState;
@@ -153,6 +156,8 @@ class App extends React.Component {
                         submitLoading: false
                     });
                 }
+
+                this.openModal();
             })
             .catch(err => {
                 this.setState({
@@ -160,6 +165,14 @@ class App extends React.Component {
                 });
                 console.log(err.message);
             });
+    };
+
+    openModal = () => {
+        this.setState({ modalIsOpen: true });
+    };
+
+    closeModal = () => {
+        this.setState({ modalIsOpen: false });
     };
 
     render() {
@@ -319,6 +332,59 @@ class App extends React.Component {
                                 )}
                             </button>
                         </Form>
+
+                        <Modal
+                            isOpen={this.state.modalIsOpen}
+                            onAfterOpen={this.afterOpenModal}
+                            onRequestClose={this.closeModal}
+                            style={{
+                                content: {
+                                    color: "white",
+                                    background: "#2f2cd8",
+                                    textAlign: "center",
+                                    padding: "3rem 2rem",
+                                    top: "50%",
+                                    left: "50%",
+                                    right: "auto",
+                                    bottom: "auto",
+                                    marginRight: "-50%",
+                                    transform: "translate(-50%, -50%)",
+                                    fonrWeight: "bold"
+                                }
+                            }}
+                            contentLabel="Example Modal"
+                        >
+                            <h1>Rahmat!</h1>
+                            <h2>Buyurtmangiz qabul qilindi</h2>
+                            <hr
+                                style={{
+                                    border: "1px solid #eee",
+                                    marginBottom: "2rem"
+                                }}
+                            ></hr>
+                            <h2
+                                style={{
+                                    marginBottom: "4rem"
+                                }}
+                            >
+                                Siz bilan yaqin orada Telegram orqali
+                                bog'lanishadi
+                            </h2>
+                            <button
+                                onClick={this.closeModal}
+                                style={{
+                                    width: "50%",
+                                    height: "5rem",
+                                    fontSize: "2rem",
+                                    color: "black",
+                                    background: "white",
+                                    border: "none",
+                                    borderBottom: "3px solid rgb(150, 150, 150)"
+                                }}
+                            >
+                                Yopish
+                            </button>
+                        </Modal>
                     </div>
                 </main>
                 <Footer />
