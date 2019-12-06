@@ -32,11 +32,14 @@ app.post("/send-order", async (req, res) => {
             html: ` <h1>Yangi Zakaz</h1>
                     <h3>Telefon raqami: ${req.body.phone}</h3>
                     <ul>
-                        <li>  To'lov valyutasi: ${req.body.currency}</li>
-                        <li>       To'lov turi: ${req.body.paymentMethod}</li>
-                        <li>    To'lov miqdori: ${req.body.amountToExchange}</li>
+                        <li>To'lov valyutasi: ${req.body.currency}</li>
+                        <li>To'lov turi: ${req.body.paymentMethod}</li>
+                        <li><strong>To'lov miqdori: ${req.body.amountToExchange}</strong></li>
                         <li>Istalgan valyutasi: ${req.body.exchangeCurrency}</li>
-                        <li>     Hamyon raqami: ${req.body.walletNum}</li>
+                        <li><strong>Hamyon raqami: ${req.body.walletNum}</strong></li>
+                        <li>BTC-UZS kursi: UZS ${req.body.btcRateUZS}</li>
+                        <li>BTC-USD kursi: USD ${req.body.btcRateUSD}</li>
+                        <li></strong>Umumiy summa: ${req.body.receiveAmount} ${req.body.exchangeCurrency}</strong></li>
                     </ul>`
         });
 

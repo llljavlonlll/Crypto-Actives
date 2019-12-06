@@ -6,18 +6,20 @@ import "./App.css";
 import Footer from "./components/Footer";
 
 class App extends React.Component {
-    state = {
+    initialState = {
         receiveAmount: 0,
-        receiveCryptocurrency: "BTC",
-        toBeExchanged: "",
+        exchangeCurrency: "BTC",
+        amountToExchange: "",
         btcRateUSD: null,
         btcRateUZS: null,
         err: null,
-        wallet: "",
+        walletNum: "",
         currency: "UZS",
-        paymentType: "cash",
-        phone: ""
+        paymentMethod: "cash",
+        phone: "",
+        submitLoading: false
     };
+    state = this.initialState;
 
     componentDidMount() {
         axios
@@ -37,34 +39,38 @@ class App extends React.Component {
 
     onChangeAmount = event => {
         const value = event.target.value;
+        const receiveAmount =
+            (parseFloat(this.state.amountToExchange) /
+                (value === "USD"
+                    ? this.state.btcRateUSD
+                    : this.state.btcRateUZS)) *
+                0.92 || 0;
+
         this.setState({
-            toBeExchanged: value,
-            receiveAmount:
-                (parseFloat(value) /
-                    (this.state.currency === "USD"
-                        ? this.state.btcRateUSD
-                        : this.state.btcRateUZS)) *
-                    0.92 || 0
+            amountToExchange: value,
+            receiveAmount
         });
     };
 
     onChangeWallet = event => {
         const value = event.target.value;
         this.setState({
-            wallet: value
+            walletNum: value
         });
     };
 
     onChangeCurrency = event => {
         const value = event.target.value;
+        const receiveAmount =
+            (parseFloat(this.state.amountToExchange) /
+                (value === "USD"
+                    ? this.state.btcRateUSD
+                    : this.state.btcRateUZS)) *
+                0.92 || 0;
+
         this.setState({
             currency: value,
-            receiveAmount:
-                (parseFloat(this.state.toBeExchanged) /
-                    (value === "USD"
-                        ? this.state.btcRateUSD
-                        : this.state.btcRateUZS)) *
-                    0.92 || 0
+            receiveAmount
         });
     };
 
@@ -75,11 +81,62 @@ class App extends React.Component {
         });
     };
 
-    // onChangeCryptocurrency = event => {
-    //     const value = event.target.value;
-    // };
+    onChangeExchangeCurrency = event => {
+        const value = event.target.value;
+        const receiveAmount = 0;
 
-    onHandleSubmit = event => {};
+        this.setState({
+            exchangeCurrency: value,
+            receiveAmount
+        });
+    };
+
+    onChangePaymentMethod = event => {
+        const value = event.target.value;
+        this.setState({
+            paymentMethod: value
+        });
+    };
+
+    onSubmit = event => {
+        event.preventDefault();
+        this.setState({
+            submitLoading: true
+        });
+        axios
+            .post("/send-order", {
+                phone: this.state.phone,
+                currency: this.state.currency,
+                paymentMethod: this.state.paymentMethod,
+                amountToExchange: this.state.amountToExchange,
+                exchangeCurrency: this.state.exchangeCurrency,
+                walletNum: this.state.walletNum,
+                btcRateUZS: this.state.btcRateUZS,
+                btcRateUSD: this.state.btcRateUSD,
+                receiveAmount: this.state.receiveAmount
+            })
+            .then(res => {
+                if (res.status === 200) {
+                    this.setState({
+                        receiveAmount: 0,
+                        exchangeCurrency: "BTC",
+                        amountToExchange: "",
+                        err: null,
+                        walletNum: "",
+                        currency: "UZS",
+                        paymentMethod: "cash",
+                        phone: "",
+                        submitLoading: false
+                    });
+                }
+            })
+            .catch(err => {
+                this.setState({
+                    submitLoading: false
+                });
+                console.log(err.message);
+            });
+    };
 
     render() {
         return (
@@ -87,7 +144,7 @@ class App extends React.Component {
                 <Header />
                 <main>
                     <div className="exchange-form">
-                        <Form method="POST" action="/send-order">
+                        <Form onSubmit={this.onSubmit}>
                             <div style={{ marginBottom: "2rem" }}>
                                 <h3>Berasiz</h3>
                                 <FormGroup>
@@ -104,7 +161,11 @@ class App extends React.Component {
                                         </option> */}
                                     </Input>
                                 </FormGroup>
-                                <FormGroup tag="fieldset">
+                                <FormGroup
+                                    tag="fieldset"
+                                    value={this.state.paymentMethod}
+                                    onChange={this.onChangePaymentMethod}
+                                >
                                     <Label className="tolov-turi">
                                         To'lov turi:
                                     </Label>
@@ -136,7 +197,7 @@ class App extends React.Component {
                                     <Input
                                         type="text"
                                         placeholder="Misol:  1500000"
-                                        value={this.state.toBeExchanged}
+                                        value={this.state.amountToExchange}
                                         onChange={this.onChangeAmount}
                                         name="amountToExchange"
                                         required
@@ -156,12 +217,17 @@ class App extends React.Component {
                                     <Input
                                         type="select"
                                         name="exchangeCurrency"
+                                        value={this.state.exchangeCurrency}
+                                        onChange={this.onChangeExchangeCurrency}
                                     >
                                         <option value="BTC">
                                             BTC - Bitcoin
                                         </option>
+
+                                        <option value="WMZ">
+                                            WMZ - WebMoney
+                                        </option>
                                         {/*
-                                    <option value="ETH">Ethereum</option>
                                     <option value="LTC">Litecoin</option>
                                     */}
                                     </Input>
@@ -171,7 +237,7 @@ class App extends React.Component {
                                     <Input
                                         type="text"
                                         placeholder="Misol:  1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2"
-                                        value={this.state.wallet}
+                                        value={this.state.walletNum}
                                         onChange={this.onChangeWallet}
                                         required
                                         name="walletNum"
@@ -182,7 +248,7 @@ class App extends React.Component {
                                     Siz{" "}
                                     <span className="total-amount">
                                         {this.state.receiveAmount.toFixed(6)}{" "}
-                                        {this.state.receiveCryptocurrency}
+                                        {this.state.exchangeCurrency}
                                     </span>{" "}
                                     olasiz
                                 </p>
@@ -203,7 +269,7 @@ class App extends React.Component {
                                         type="phone"
                                         name="phone"
                                         id="phone-number"
-                                        placeholder="Misol:  998559662"
+                                        placeholder="Misol:  +998998559662"
                                         value={this.state.phone}
                                         onChange={this.onChangePhone}
                                         required
@@ -211,11 +277,7 @@ class App extends React.Component {
                                 </FormGroup>
                             </div>
 
-                            <button
-                                onClick={this.onHandleSubmit}
-                                className="btn btn-primary"
-                                type="submit"
-                            >
+                            <button className="btn btn-primary">
                                 Almashtirish
                             </button>
                         </Form>
