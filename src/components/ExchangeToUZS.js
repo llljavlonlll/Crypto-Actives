@@ -7,15 +7,13 @@ import numeral from "numeral";
 
 class App extends React.Component {
     initialState = {
+        amountBeforeBonus: 0,
         receiveAmount: 0,
-        exchangeCurrency: "BTC",
         amountToExchange: "",
-        btcRateUSD: null,
-        btcRateUZS: null,
-        wmzToUZS: 9600,
-        err: null,
+        exchangeCurrency: "UZS",
+        err: this.props.err,
         cardNum: "",
-        currency: "UZS",
+        currency: "BTC",
         paymentMethod: "cash",
         phone: "",
         submitLoading: false,
@@ -24,36 +22,21 @@ class App extends React.Component {
 
     state = this.initialState;
 
-    componentDidMount() {
-        axios
-            .get("https://api.coindesk.com/v1/bpi/currentprice/UZS.json")
-            .then(response => {
-                this.setState({
-                    btcRateUSD: response.data.bpi.USD.rate_float,
-                    btcRateUZS: response.data.bpi.UZS.rate_float
-                });
-            })
-            .catch(err => {
-                this.setState({
-                    err: err.message
-                });
-            });
-    }
-
     onChangeAmount = event => {
         const value = event.target.value;
-        let receiveAmount = null;
+        let amountBeforeBonus = null;
 
-        if (this.state.exchangeCurrency === "BTC") {
-            receiveAmount =
-                (parseFloat(value) / this.state.btcRateUZS) * 0.92 || 0;
-        } else if (this.state.exchangeCurrency === "WMZ") {
-            receiveAmount =
-                (parseFloat(value) / this.state.wmzToUZS) * 0.92 || 0;
+        if (this.state.currency === "BTC") {
+            amountBeforeBonus = parseFloat(value) * this.props.btcRateUZS || 0;
+        } else if (this.state.currency === "WMZ") {
+            amountBeforeBonus = parseFloat(value) * this.props.wmzToUZS || 0;
         }
+
+        let receiveAmount = amountBeforeBonus * 1.02;
 
         this.setState({
             amountToExchange: value,
+            amountBeforeBonus,
             receiveAmount
         });
     };
@@ -66,23 +49,26 @@ class App extends React.Component {
     };
 
     onChangeCurrency = event => {
-        // const value = event.target.value;
-        // let receiveAmount = null;
-        // if (this.state.exchangeCurrency === "BTC") {
-        //     receiveAmount =
-        //         (parseFloat(this.state.amountToExchange) /
-        //             this.state.btcRateUZS) *
-        //             0.92 || 0;
-        // } else if (this.state.exchangeCurrency === "WMZ") {
-        //     receiveAmount =
-        //         (parseFloat(this.state.amountToExchange) /
-        //             this.state.wmzToUZS) *
-        //             0.92 || 0;
-        // }
-        // this.setState({
-        //     currency: value,
-        //     receiveAmount
-        // });
+        const value = event.target.value;
+        let amountBeforeBonus = null;
+
+        if (value === "BTC") {
+            amountBeforeBonus =
+                parseFloat(this.state.amountToExchange) *
+                    this.props.btcRateUZS || 0;
+        } else if (value === "WMZ") {
+            amountBeforeBonus =
+                parseFloat(this.state.amountToExchange) * this.props.wmzToUZS ||
+                0;
+        }
+
+        let receiveAmount = amountBeforeBonus * 1.02;
+
+        this.setState({
+            currency: value,
+            amountBeforeBonus,
+            receiveAmount
+        });
     };
 
     onChangePhone = event => {
@@ -94,22 +80,21 @@ class App extends React.Component {
 
     onChangeExchangeCurrency = event => {
         const value = event.target.value;
-        let receiveAmount = null;
+        let amountBeforeBonus = null;
 
-        if (value === "BTC") {
-            receiveAmount =
-                (parseFloat(this.state.amountToExchange) /
-                    this.state.btcRateUZS) *
-                    0.92 || 0;
-        } else if (value === "WMZ") {
-            receiveAmount =
-                (parseFloat(this.state.amountToExchange) /
-                    this.state.wmzToUZS) *
-                    0.92 || 0;
+        if (value === "UZS") {
+            amountBeforeBonus =
+                parseFloat(this.state.amountToExchange) *
+                    this.props.btcRateUZS || 0;
+        } else if (value === "USD") {
+            amountBeforeBonus = parseFloat(this.state.amountToExchange) || 0;
         }
+
+        let receiveAmount = amountBeforeBonus * 1.02;
 
         this.setState({
             exchangeCurrency: value,
+            amountBeforeBonus,
             receiveAmount
         });
     };
@@ -134,9 +119,9 @@ class App extends React.Component {
                 amountToExchange: this.state.amountToExchange,
                 exchangeCurrency: this.state.exchangeCurrency,
                 cardNum: this.state.cardNum,
-                btcRateUZS: this.state.btcRateUZS,
-                btcRateUSD: this.state.btcRateUSD,
-                wmzToUZS: this.state.wmzToUZS,
+                btcRateUZS: this.props.btcRateUZS,
+                btcRateUSD: this.props.btcRateUSD,
+                wmzToUZS: this.props.wmzToUZS,
                 receiveAmount: this.state.receiveAmount
             })
             .then(res => {
@@ -185,11 +170,9 @@ class App extends React.Component {
                                         <Label>Valyuta turi</Label>
                                         <Input
                                             type="select"
-                                            name="exchangeCurrency"
-                                            value={this.state.exchangeCurrency}
-                                            onChange={
-                                                this.onChangeExchangeCurrency
-                                            }
+                                            name="currency"
+                                            value={this.state.currency}
+                                            onChange={this.onChangeCurrency}
                                         >
                                             <option value="BTC">
                                                 BTC - Bitcoin
@@ -207,7 +190,11 @@ class App extends React.Component {
                                         <Label>Miqdori</Label>
                                         <Input
                                             type="text"
-                                            placeholder="Misol:  1500000"
+                                            placeholder={`Misol:  ${
+                                                this.state.currency === "BTC"
+                                                    ? "0.0250"
+                                                    : "150"
+                                            }`}
                                             value={this.state.amountToExchange}
                                             onChange={this.onChangeAmount}
                                             name="amountToExchange"
@@ -218,10 +205,8 @@ class App extends React.Component {
                                     <p className="total-spend">
                                         Jami berasiz:{" "}
                                         <span className="total-amount-spend">
-                                            {this.state.receiveAmount.toFixed(
-                                                6
-                                            )}{" "}
-                                            {this.state.exchangeCurrency}
+                                            {this.state.amountToExchange || "0"}{" "}
+                                            {this.state.currency}
                                         </span>
                                     </p>
 
@@ -237,9 +222,14 @@ class App extends React.Component {
                                             <Label>Valyuta turi</Label>
                                             <Input
                                                 type="select"
-                                                value={this.state.currency}
-                                                onChange={this.onChangeCurrency}
-                                                name="currency"
+                                                value={
+                                                    this.state.exchangeCurrency
+                                                }
+                                                onChange={
+                                                    this
+                                                        .onChangeExchangeCurrency
+                                                }
+                                                name="exchangeCurrency"
                                             >
                                                 <option value="UZS">
                                                     UZS - So'm
@@ -257,7 +247,7 @@ class App extends React.Component {
                                             }
                                         >
                                             <Label className="tolov-turi">
-                                                To'lov turi:
+                                                To'lov qabul turi:
                                             </Label>
                                             {/*<FormGroup check inline>
                                                 <Label check>
@@ -297,16 +287,38 @@ class App extends React.Component {
                                                 name="cardNum"
                                             ></Input>
                                         </FormGroup>
-
-                                        <p className="total">
-                                            Jami olasiz:{" "}
-                                            <span className="total-amount">
-                                                {numeral(
-                                                    this.state.amountToExchange
-                                                ).format("0,0") || "0"}{" "}
-                                                So'm
-                                            </span>
-                                        </p>
+                                        <div className="detailed-pay">
+                                            <p className="total">
+                                                Summa:{" "}
+                                                <span>
+                                                    {numeral(
+                                                        this.state
+                                                            .amountBeforeBonus
+                                                    ).format("0,0") || "0"}{" "}
+                                                    So'm
+                                                </span>
+                                            </p>
+                                            <p className="total">
+                                                Bonus <strong>(+2%)</strong>:{" "}
+                                                <span>
+                                                    {numeral(
+                                                        this.state
+                                                            .amountBeforeBonus *
+                                                            0.02
+                                                    ).format("0,0") || "0"}{" "}
+                                                    So'm
+                                                </span>
+                                            </p>
+                                            <p className="total">
+                                                Jami olasiz:{" "}
+                                                <span className="total-amount">
+                                                    {numeral(
+                                                        this.state.receiveAmount
+                                                    ).format("0,0") || "0"}{" "}
+                                                    So'm
+                                                </span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                                 <div

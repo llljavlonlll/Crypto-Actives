@@ -30,7 +30,7 @@ class App extends React.Component {
                 (parseFloat(value) / this.props.btcRateUZS) * 0.92 || 0;
         } else if (this.state.exchangeCurrency === "WMZ") {
             receiveAmount =
-                (parseFloat(value) / this.state.wmzToUZS) * 0.92 || 0;
+                (parseFloat(value) / this.props.wmzToUZS) * 0.92 || 0;
         }
 
         this.setState({
@@ -57,7 +57,7 @@ class App extends React.Component {
         // } else if (this.state.exchangeCurrency === "WMZ") {
         //     receiveAmount =
         //         (parseFloat(this.state.amountToExchange) /
-        //             this.state.wmzToUZS) *
+        //             this.props.wmzToUZS) *
         //             0.92 || 0;
         // }
         // this.setState({
@@ -85,7 +85,7 @@ class App extends React.Component {
         } else if (value === "WMZ") {
             receiveAmount =
                 (parseFloat(this.state.amountToExchange) /
-                    this.state.wmzToUZS) *
+                    this.props.wmzToUZS) *
                     0.92 || 0;
         }
 
@@ -117,7 +117,7 @@ class App extends React.Component {
                 walletNum: this.state.walletNum,
                 btcRateUZS: this.props.btcRateUZS,
                 btcRateUSD: this.props.btcRateUSD,
-                wmzToUZS: this.state.wmzToUZS,
+                wmzToUZS: this.props.wmzToUZS,
                 receiveAmount: this.state.receiveAmount
             })
             .then(res => {
