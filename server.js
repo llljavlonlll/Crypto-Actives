@@ -25,10 +25,11 @@ app.post("/send-order", async (req, res) => {
             }
         });
 
+        // trader_188@list.ru, butabaev.o@gmail.com
         // send mail with defined transport object
         let info = await transporter.sendMail({
             from: '"Crypto Actives" <javlon@encompass.uz>', // sender address
-            to: "butabaev.o@gmail.com, jbutabaev@gmail.com, trader_188@list.ru", // list of receivers
+            to: "jbutabaev@gmail.com", // list of receivers
             subject: "Yangi Buyurtma", // Subject line
             html: ` <h1>Yangi Buyurtma</h1>
                     <h3>Buyurtma ma'lumotlari</h3>
@@ -36,29 +37,35 @@ app.post("/send-order", async (req, res) => {
                         <li>Telefon raqami: ${req.body.phone}</li>
                         <li>To'lov valyutasi: ${req.body.currency}</li>
                         <li>To'lov turi: ${req.body.paymentMethod}</li>
-                        <li><strong>To'lov miqdori: ${numeral(
+                        <li>To'lov miqdori: ${numeral(
                             req.body.amountToExchange
-                        ).format("0,0")}</strong></li>
+                        ).format("0,0")} ${req.body.currency}</li>
                         <li>Istalgan valyutasi: ${
                             req.body.exchangeCurrency
                         }</li>
-                        <li><strong>Hamyon raqami: ${
+                        <li>${
                             req.body.walletNum
-                        }</strong></li>
-                        <li></strong>Umumiy summa: ${req.body.receiveAmount} ${
+                                ? "Hamyon raqami: " + req.body.walletNum
+                                : "Plastik karta raqami: " + req.body.cardNum
+                        }</li>
+                        <li>Umumiy summa: ${numeral(
+                            req.body.receiveAmount
+                        ).format("0,0.000000")} ${
                 req.body.exchangeCurrency
-            }</strong></li>
+            }</li>
                     </ul>
                     <br><br><br><hr><br><br>
                     <h3>Buyurtma berilgan vaqtdagi kurslar</h3>
                     <ul>
-                        <li>BTC-UZS kursi: 1 BTC - ${
+                        <li>BTC-UZS kursi: 1 BTC - ${numeral(
                             req.body.btcRateUZS
-                        } UZS</li>
-                        <li>BTC-USD kursi: 1 BTC - ${
+                        ).format("0,0.00")} UZS</li>
+                        <li>BTC-USD kursi: 1 BTC - ${numeral(
                             req.body.btcRateUSD
-                        } USD</li>
-                        <li>WMZ-UZS kursi: 1 WMZ - ${req.body.wmzToUZS} UZS</li>
+                        ).format("0,0.00")} USD</li>
+                        <li>WMZ-UZS kursi: 1 WMZ - ${numeral(
+                            req.body.wmzToUZS
+                        ).format("0,0.00")} UZS</li>
                     </ul>`
         });
 

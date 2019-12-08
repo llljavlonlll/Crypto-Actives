@@ -14,7 +14,7 @@ class App extends React.Component {
         err: this.props.err,
         cardNum: "",
         currency: "BTC",
-        paymentMethod: "cash",
+        paymentMethod: "card",
         phone: "",
         submitLoading: false,
         modalIsOpen: false
@@ -126,26 +126,16 @@ class App extends React.Component {
             })
             .then(res => {
                 if (res.status === 200) {
-                    this.setState({
-                        receiveAmount: 0,
-                        exchangeCurrency: "BTC",
-                        amountToExchange: "",
-                        err: null,
-                        cardNum: "",
-                        currency: "UZS",
-                        paymentMethod: "cash",
-                        phone: "",
-                        submitLoading: false
-                    });
+                    this.setState(this.initialState);
                 }
 
                 this.openModal();
             })
             .catch(err => {
                 this.setState({
-                    submitLoading: false
+                    submitLoading: false,
+                    err: err.message
                 });
-                console.log(err.message);
             });
     };
 
@@ -394,7 +384,7 @@ class App extends React.Component {
                                     }}
                                 >
                                     Siz bilan yaqin orada Telegram orqali
-                                    bog'lanishadi
+                                    bog'lanamiz
                                 </h2>
                                 <button
                                     onClick={this.closeModal}

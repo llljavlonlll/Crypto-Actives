@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import ExchangeToBTC from "./components/ExchangeToBTC";
 import ExchangeToUZS from "./components/ExchangeToUZS";
+import ContactPage from "./components/ContactPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -43,7 +44,7 @@ class App extends React.Component {
                             <ExchangeToUZS {...this.state} />
                         </Route>
                         <Route path="/contact">
-                            <div>Contact information on this page</div>
+                            <ContactPage />
                         </Route>
                     </Switch>
                     <Footer />

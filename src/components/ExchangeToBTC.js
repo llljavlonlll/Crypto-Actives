@@ -360,7 +360,7 @@ class App extends React.Component {
                                     }}
                                 >
                                     Siz bilan yaqin orada Telegram orqali
-                                    bog'lanishadi
+                                    bog'lanamiz
                                 </h2>
                                 <button
                                     onClick={this.closeModal}

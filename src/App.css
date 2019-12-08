@@ -59,6 +59,7 @@ a:hover {
 /* Active link styles */
 .selected {
     border-bottom: 2px solid red;
+    color: red !important;
 }
 
 li {
@@ -67,7 +68,7 @@ li {
 
 #hero_logo,
 .hero_logo {
-    height: 4rem;
+    height: 4.5rem;
 }
 
 #mobile_logo,
@@ -80,6 +81,7 @@ li {
     padding: 3rem;
     margin-bottom: 4rem;
     background-color: rgb(29, 27, 141);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 .navbar__links {
@@ -128,6 +130,7 @@ li {
     max-width: 60rem;
     margin: 0 auto;
     padding: 3rem;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
 }
 
 .exchange-form h3 {
@@ -192,6 +195,7 @@ li {
     text-align: center;
     height: 6rem;
     padding: 1.8rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0);
 }
 
 .footer p {
@@ -203,10 +207,38 @@ li {
     margin: 0 auto;
 }
 
+/* Contact Page */
+.contact-form {
+    background-color: #eee;
+    color: #555;
+    padding: 3rem;
+    border-radius: 5px;
+}
+
+.contact-details {
+    margin: 3rem 0 5rem 0;
+}
+
+.contact-details > p {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.office-photo {
+    width: 100%;
+    height: 55%;
+}
+
+.photo {
+    width: 100%;
+    height: 100%;
+    background-color: orangered;
+}
+
 @media (max-width: 770px) {
     .navbar {
         margin-bottom: 2rem;
-        padding: 3rem 1.5rem;
+        padding: 2rem;
     }
 
     .navbar__links {
