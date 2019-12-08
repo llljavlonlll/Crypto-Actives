@@ -3,6 +3,7 @@ import { Form, FormGroup, Label, Input } from "reactstrap";
 import ReactLoading from "react-loading";
 import Modal from "react-modal";
 import axios from "axios";
+import numeral from "numeral";
 
 class App extends React.Component {
     initialState = {
@@ -241,10 +242,10 @@ class App extends React.Component {
                                     <p className="total-spend">
                                         Jami:{" "}
                                         <span className="total-amount-spend">
-                                            {this.state.receiveAmount.toFixed(
-                                                6
-                                            )}{" "}
-                                            {this.state.currency}
+                                            {numeral(
+                                                this.state.amountToExchange
+                                            ).format("0,0") || "0"}{" "}
+                                            So'm
                                         </span>
                                     </p>
                                 </div>
