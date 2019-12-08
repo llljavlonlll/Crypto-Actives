@@ -51,19 +51,27 @@ button {
     border-bottom: 5px solid rgb(44, 42, 214);
 }
 
-a {
+a,
+a:hover {
     text-decoration: none;
+}
+
+/* Active link styles */
+.selected {
+    border-bottom: 2px solid red;
 }
 
 li {
     list-style: none;
 }
 
-#hero_logo {
+#hero_logo,
+.hero_logo {
     height: 4rem;
 }
 
-#mobile_logo {
+#mobile_logo,
+.mobile_logo {
     height: 8rem;
     display: none;
 }
@@ -71,6 +79,7 @@ li {
 .navbar {
     padding: 3rem;
     margin-bottom: 4rem;
+    background-color: rgb(29, 27, 141);
 }
 
 .navbar__links {
@@ -91,6 +100,24 @@ li {
     display: inline-block;
     font-size: 3.2rem;
     font-weight: 600;
+}
+
+.navbar-toggler {
+    width: 8rem;
+    display: none;
+}
+
+.nav-item {
+    /* border-bottom: 1px dotted white; */
+    padding: 1.5rem;
+}
+
+.nav-item > a {
+    color: white;
+}
+
+.navbar-collapse {
+    text-align: center;
 }
 
 .exchange-form {
@@ -128,11 +155,21 @@ li {
 }
 
 .total-amount {
-    color: rgb(47, 44, 216);
+    color: green;
     font-weight: 700;
 }
 
 .total {
+    padding: 2rem 0;
+    text-align: right;
+}
+
+.total-amount-spend {
+    color: red;
+    font-weight: 700;
+}
+
+.total-spend {
     padding: 2rem 0;
     text-align: right;
 }
@@ -153,9 +190,9 @@ li {
     margin: 0 auto;
 }
 
-@media (max-width: 680px) {
+@media (max-width: 770px) {
     .navbar {
-        margin-bottom: 0;
+        margin-bottom: 2rem;
         padding: 3rem 1.5rem;
     }
 
@@ -163,20 +200,26 @@ li {
         display: none;
     }
 
+    .navbar-toggler {
+        display: block;
+    }
+
     main {
-        padding: 1.5rem;
+        padding: 0.5rem;
     }
 
     .exchange-form {
         padding: 2rem;
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
     }
 
-    #hero_logo {
+    #hero_logo,
+    .hero_logo {
         display: none;
     }
 
-    #mobile_logo {
+    #mobile_logo,
+    .mobile_logo {
         display: inline-block;
     }
 }

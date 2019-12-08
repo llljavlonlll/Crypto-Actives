@@ -58,6 +58,10 @@ app.post("/send-order", async (req, res) => {
     }
 });
 
+app.get("/about", function(req, res) {
+    res.sendFile(path.join(__dirname, "build", "about.html"));
+});
+
 app.get("/*", function(req, res) {
     res.sendFile(path.join(__dirname, "build", "index.html"));
 });
