@@ -240,7 +240,7 @@ class App extends React.Component {
                                         ></Input>
                                     </FormGroup>
                                     <p className="total-spend">
-                                        Jami:{" "}
+                                        Jami berasiz:{" "}
                                         <span className="total-amount-spend">
                                             {numeral(
                                                 this.state.amountToExchange
@@ -297,7 +297,7 @@ class App extends React.Component {
                                     </FormGroup>
 
                                     <p className="total">
-                                        Jami:{" "}
+                                        Jami olasiz:{" "}
                                         <span className="total-amount">
                                             {this.state.receiveAmount.toFixed(
                                                 6
