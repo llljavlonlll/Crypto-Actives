@@ -1,14 +1,6 @@
 import React from "react";
 import { NavLink as Link } from "react-router-dom";
-import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink
-} from "reactstrap";
+import { Collapse, Navbar, NavbarToggler, Nav, NavItem } from "reactstrap";
 import { HamburgerCollapse } from "react-animated-burgers";
 
 class Header extends React.Component {

@@ -223,3 +223,19 @@ li {
         display: inline-block;
     }
 }
+
+::-webkit-input-placeholder {
+    opacity: 0.4 !important;
+}
+
+::-moz-placeholder {
+    opacity: 0.4 !important;
+}
+
+::-ms-placeholder {
+    opacity: 0.4 !important;
+}
+
+::placeholder {
+    opacity: 0.4 !important;
+}

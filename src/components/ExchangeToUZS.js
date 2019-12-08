@@ -10,8 +10,11 @@ class App extends React.Component {
         receiveAmount: 0,
         exchangeCurrency: "BTC",
         amountToExchange: "",
-        err: this.props.err,
-        walletNum: "",
+        btcRateUSD: null,
+        btcRateUZS: null,
+        wmzToUZS: 9600,
+        err: null,
+        cardNum: "",
         currency: "UZS",
         paymentMethod: "cash",
         phone: "",
@@ -21,13 +24,29 @@ class App extends React.Component {
 
     state = this.initialState;
 
+    componentDidMount() {
+        axios
+            .get("https://api.coindesk.com/v1/bpi/currentprice/UZS.json")
+            .then(response => {
+                this.setState({
+                    btcRateUSD: response.data.bpi.USD.rate_float,
+                    btcRateUZS: response.data.bpi.UZS.rate_float
+                });
+            })
+            .catch(err => {
+                this.setState({
+                    err: err.message
+                });
+            });
+    }
+
     onChangeAmount = event => {
         const value = event.target.value;
         let receiveAmount = null;
 
         if (this.state.exchangeCurrency === "BTC") {
             receiveAmount =
-                (parseFloat(value) / this.props.btcRateUZS) * 0.92 || 0;
+                (parseFloat(value) / this.state.btcRateUZS) * 0.92 || 0;
         } else if (this.state.exchangeCurrency === "WMZ") {
             receiveAmount =
                 (parseFloat(value) / this.state.wmzToUZS) * 0.92 || 0;
@@ -39,10 +58,10 @@ class App extends React.Component {
         });
     };
 
-    onChangeWallet = event => {
+    onChangeCardNum = event => {
         const value = event.target.value;
         this.setState({
-            walletNum: value
+            cardNum: value
         });
     };
 
@@ -52,7 +71,7 @@ class App extends React.Component {
         // if (this.state.exchangeCurrency === "BTC") {
         //     receiveAmount =
         //         (parseFloat(this.state.amountToExchange) /
-        //             this.props.btcRateUZS) *
+        //             this.state.btcRateUZS) *
         //             0.92 || 0;
         // } else if (this.state.exchangeCurrency === "WMZ") {
         //     receiveAmount =
@@ -80,7 +99,7 @@ class App extends React.Component {
         if (value === "BTC") {
             receiveAmount =
                 (parseFloat(this.state.amountToExchange) /
-                    this.props.btcRateUZS) *
+                    this.state.btcRateUZS) *
                     0.92 || 0;
         } else if (value === "WMZ") {
             receiveAmount =
@@ -114,9 +133,9 @@ class App extends React.Component {
                 paymentMethod: this.state.paymentMethod,
                 amountToExchange: this.state.amountToExchange,
                 exchangeCurrency: this.state.exchangeCurrency,
-                walletNum: this.state.walletNum,
-                btcRateUZS: this.props.btcRateUZS,
-                btcRateUSD: this.props.btcRateUSD,
+                cardNum: this.state.cardNum,
+                btcRateUZS: this.state.btcRateUZS,
+                btcRateUSD: this.state.btcRateUSD,
                 wmzToUZS: this.state.wmzToUZS,
                 receiveAmount: this.state.receiveAmount
             })
@@ -127,7 +146,7 @@ class App extends React.Component {
                         exchangeCurrency: "BTC",
                         amountToExchange: "",
                         err: null,
-                        walletNum: "",
+                        cardNum: "",
                         currency: "UZS",
                         paymentMethod: "cash",
                         phone: "",
@@ -166,82 +185,6 @@ class App extends React.Component {
                                         <Label>Valyuta turi</Label>
                                         <Input
                                             type="select"
-                                            value={this.state.currency}
-                                            onChange={this.onChangeCurrency}
-                                            name="currency"
-                                        >
-                                            <option value="UZS">
-                                                UZS - So'm
-                                            </option>
-                                            {/*<option value="USD">
-                                            USD - AQSh Dollar
-                                        </option> */}
-                                        </Input>
-                                    </FormGroup>
-                                    <FormGroup
-                                        tag="fieldset"
-                                        value={this.state.paymentMethod}
-                                        onChange={this.onChangePaymentMethod}
-                                    >
-                                        <Label className="tolov-turi">
-                                            To'lov turi:
-                                        </Label>
-                                        <FormGroup check inline>
-                                            <Label check>
-                                                <Input
-                                                    type="radio"
-                                                    name="paymentMethod"
-                                                    value="cash"
-                                                    required
-                                                    defaultChecked
-                                                ></Input>
-                                                Naqd
-                                            </Label>
-                                        </FormGroup>
-                                        <FormGroup check inline>
-                                            <Label check>
-                                                <Input
-                                                    type="radio"
-                                                    name="paymentMethod"
-                                                    value="card"
-                                                ></Input>
-                                                Plastik
-                                            </Label>
-                                        </FormGroup>
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label>Miqdori</Label>
-                                        <Input
-                                            type="text"
-                                            placeholder="Misol:  1500000"
-                                            value={this.state.amountToExchange}
-                                            onChange={this.onChangeAmount}
-                                            name="amountToExchange"
-                                            required
-                                        ></Input>
-                                    </FormGroup>
-                                    <p className="total-spend">
-                                        Jami berasiz:{" "}
-                                        <span className="total-amount-spend">
-                                            {numeral(
-                                                this.state.amountToExchange
-                                            ).format("0,0") || "0"}{" "}
-                                            So'm
-                                        </span>
-                                    </p>
-                                </div>
-                                <div
-                                    style={{
-                                        marginBottom: "2rem",
-                                        marginTop: "2rem"
-                                    }}
-                                >
-                                    <hr />
-                                    <h3>Olasiz</h3>
-                                    <FormGroup>
-                                        <Label>Valyuta turi</Label>
-                                        <Input
-                                            type="select"
                                             name="exchangeCurrency"
                                             value={this.state.exchangeCurrency}
                                             onChange={
@@ -256,36 +199,115 @@ class App extends React.Component {
                                                 WMZ - WebMoney
                                             </option>
                                             {/*
-                                    <option value="LTC">Litecoin</option>
-                                    */}
+                                <option value="LTC">Litecoin</option>
+                                */}
                                         </Input>
                                     </FormGroup>
                                     <FormGroup>
-                                        <Label>Hamyon raqami</Label>
+                                        <Label>Miqdori</Label>
                                         <Input
                                             type="text"
-                                            placeholder={`Misol:  ${
-                                                this.state.exchangeCurrency ===
-                                                "BTC"
-                                                    ? "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2"
-                                                    : "Z106185125514"
-                                            }`}
-                                            value={this.state.walletNum}
-                                            onChange={this.onChangeWallet}
+                                            placeholder="Misol:  1500000"
+                                            value={this.state.amountToExchange}
+                                            onChange={this.onChangeAmount}
+                                            name="amountToExchange"
                                             required
-                                            name="walletNum"
                                         ></Input>
                                     </FormGroup>
 
-                                    <p className="total">
-                                        Jami olasiz:{" "}
-                                        <span className="total-amount">
+                                    <p className="total-spend">
+                                        Jami berasiz:{" "}
+                                        <span className="total-amount-spend">
                                             {this.state.receiveAmount.toFixed(
                                                 6
                                             )}{" "}
                                             {this.state.exchangeCurrency}
                                         </span>
                                     </p>
+
+                                    <div
+                                        style={{
+                                            marginBottom: "2rem",
+                                            marginTop: "2rem"
+                                        }}
+                                    >
+                                        <hr />
+                                        <h3>Olasiz</h3>
+                                        <FormGroup>
+                                            <Label>Valyuta turi</Label>
+                                            <Input
+                                                type="select"
+                                                value={this.state.currency}
+                                                onChange={this.onChangeCurrency}
+                                                name="currency"
+                                            >
+                                                <option value="UZS">
+                                                    UZS - So'm
+                                                </option>
+                                                {/*<option value="USD">
+                                            USD - AQSh Dollar
+                                        </option> */}
+                                            </Input>
+                                        </FormGroup>
+                                        <FormGroup
+                                            tag="fieldset"
+                                            value={this.state.paymentMethod}
+                                            onChange={
+                                                this.onChangePaymentMethod
+                                            }
+                                        >
+                                            <Label className="tolov-turi">
+                                                To'lov turi:
+                                            </Label>
+                                            {/*<FormGroup check inline>
+                                                <Label check>
+                                                    <Input
+                                                        type="radio"
+                                                        name="paymentMethod"
+                                                        value="cash"
+                                                        required
+                                                        defaultChecked
+                                                    ></Input>
+                                                    Naqd
+                                                </Label>
+                                            </FormGroup>*/}
+                                            <FormGroup check inline>
+                                                <Label check>
+                                                    <Input
+                                                        type="radio"
+                                                        name="paymentMethod"
+                                                        value="card"
+                                                        required
+                                                        defaultChecked
+                                                    ></Input>
+                                                    Plastik
+                                                </Label>
+                                            </FormGroup>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Label>Plastik karta raqami</Label>
+                                            <Input
+                                                type="text"
+                                                placeholder={
+                                                    "Misol:  0000 1111 2222 3333"
+                                                }
+                                                value={this.state.cardNum}
+                                                onChange={this.onChangeCardNum}
+                                                required
+                                                name="cardNum"
+                                            ></Input>
+                                        </FormGroup>
+
+                                        <p className="total">
+                                            Jami olasiz:{" "}
+                                            <span className="total-amount">
+                                                {numeral(
+                                                    this.state.amountToExchange
+                                                ).format("0,0") || "0"}{" "}
+                                                So'm
+                                            </span>
+                                        </p>
+                                    </div>
                                 </div>
                                 <div
                                     style={{
