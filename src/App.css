@@ -19,11 +19,10 @@ body {
 
     background-image: linear-gradient(
             to right bottom,
-            rgba(47, 44, 216, 0.8),
-            rgba(36, 34, 158, 0.8)
+            rgba(51, 49, 192, 0.9),
+            rgba(86, 83, 250, 0.9)
         ),
         url(images/bg_icons.jpg);
-    background-size: repeat;
     background-position: top;
     font-size: 2.4rem;
 }
@@ -59,7 +58,6 @@ a:hover {
 /* Active link styles */
 .selected {
     border-bottom: 2px solid red;
-    color: red !important;
 }
 
 li {
@@ -213,6 +211,7 @@ li {
     color: #555;
     padding: 3rem;
     border-radius: 5px;
+    margin-top: 1.8rem;
 }
 
 .captcha {
@@ -260,7 +259,13 @@ li {
     margin-top: 5rem;
 }
 
-@media (max-width: 770px) {
+@media (min-width: 992px) {
+    .container {
+        max-width: 1200px;
+    }
+}
+
+@media (max-width: 768px) {
     .navbar {
         margin-bottom: 2rem;
         padding: 2rem;

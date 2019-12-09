@@ -17,7 +17,14 @@ class ContactPage extends React.Component {
     state = {
         isVerified: false,
         captchaLoading: true,
-        err: undefined
+        submitLoading: false,
+        err: undefined,
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: ""
     };
 
     handleCaptchaLoaded = () => {
@@ -36,22 +43,47 @@ class ContactPage extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
+
         if (this.state.isVerified) {
+            this.setState({
+                submitLoading: true
+            });
+
             axios
-                .post("/feedback", {})
-                .then(res => {
-                    console.log(res);
+                .post("/feedback", {
+                    ...this.state
                 })
-                .catch(err => console.log(err.message));
+                .then(res => {
+                    this.setState({
+                        submitLoading: false
+                    });
+                })
+                .catch(err => {
+                    this.setState({
+                        submitLoading: false
+                    });
+                    console.log(err.message);
+                });
         }
+    };
+
+    handleOnChange = event => {
+        const value = event.target.value;
+        const name = event.target.name;
+
+        this.setState({
+            [name]: value
+        });
     };
 
     render() {
         return (
-            <Container>
+            <div className="container">
                 <Row>
                     <Col sm="12" lg="6">
-                        <h1>Aloqa ma'lumotlari</h1>
+                        <h1>
+                            <strong>Aloqa ma'lumotlari</strong>
+                        </h1>
                         <div className="contact-details">
                             <p>
                                 <strong>Ish vaqti:</strong> Du-Sh 10:00 dan
@@ -69,7 +101,9 @@ class ContactPage extends React.Component {
                             </p>
                         </div>
                         <div className="office-photo">
-                            <h1>Asosiy ofis</h1>
+                            <h1>
+                                <strong>Asosiy ofis</strong>
+                            </h1>
                             <img
                                 src="../images/office.jpg"
                                 className="photo"
@@ -78,6 +112,9 @@ class ContactPage extends React.Component {
                         </div>
                     </Col>
                     <Col sm="12" lg="6">
+                        <h1>
+                            <strong>Biz bilan bog'laning</strong>
+                        </h1>
                         <Form
                             className="contact-form"
                             onSubmit={this.handleSubmit}
@@ -85,41 +122,70 @@ class ContactPage extends React.Component {
                             <Row>
                                 <Col sm="12" md="6">
                                     <FormGroup>
-                                        <Label>Ism</Label>
+                                        {/*<Label>Ism</Label>*/}
                                         <Input
                                             type="text"
                                             name="firstName"
+                                            value={this.state.firstName}
+                                            onChange={this.handleOnChange}
+                                            placeholder="Ism"
+                                            required
                                         ></Input>
                                     </FormGroup>
                                 </Col>
                                 <Col sm="12" md="6">
                                     <FormGroup>
-                                        <Label>Familiya</Label>
+                                        {/*<Label>Familiya</Label>*/}
                                         <Input
                                             type="text"
                                             name="lastName"
+                                            value={this.state.lastName}
+                                            onChange={this.handleOnChange}
+                                            placeholder="Familiya"
+                                            required
                                         ></Input>
                                     </FormGroup>
                                 </Col>
                             </Row>
                             <FormGroup>
-                                <Label>Email</Label>
-                                <Input type="email" name="email"></Input>
+                                {/*<Label>Email</Label>*/}
+                                <Input
+                                    type="email"
+                                    name="email"
+                                    value={this.state.email}
+                                    onChange={this.handleOnChange}
+                                    placeholder="Email: misol@mail.uz"
+                                ></Input>
                             </FormGroup>
                             <FormGroup>
-                                <Label>Telefon raqam</Label>
-                                <Input type="text" name="phone"></Input>
+                                {/*<Label>Telefon</Label>*/}
+                                <Input
+                                    type="text"
+                                    name="phone"
+                                    value={this.state.phone}
+                                    onChange={this.handleOnChange}
+                                    placeholder="Telefon: +998998559662"
+                                    required
+                                ></Input>
                             </FormGroup>
                             <FormGroup>
-                                <Label>Mavzu</Label>
-                                <Input type="text" name="subject"></Input>
+                                {/*<Label>Mavzu</Label>*/}
+                                <Input
+                                    type="text"
+                                    name="subject"
+                                    value={this.state.subject}
+                                    onChange={this.handleOnChange}
+                                    placeholder="Mavzu: Saytdagi noqulayliklar"
+                                ></Input>
                             </FormGroup>
                             <FormGroup>
-                                <Label>Xabar</Label>
+                                {/*<Label>Xabar</Label>*/}
                                 <Input
                                     type="textarea"
                                     name="message"
                                     rows="6"
+                                    placeholder="Xabar"
+                                    required
                                 ></Input>
                             </FormGroup>
                             <div className="captcha">
@@ -137,7 +203,18 @@ class ContactPage extends React.Component {
                                     verifyCallback={this.handleVerify}
                                 />
                             </div>
-                            <Button>Yuborish</Button>
+                            <Button>
+                                {this.state.submitLoading ? (
+                                    <ReactLoading
+                                        color={"white"}
+                                        type={"spin"}
+                                        width={"6%"}
+                                        className="spinner"
+                                    />
+                                ) : (
+                                    "Yuborish"
+                                )}
+                            </Button>
                         </Form>
                     </Col>
                     <div className="google-map">
@@ -155,7 +232,7 @@ class ContactPage extends React.Component {
                         ></iframe>
                     </div>
                 </Row>
-            </Container>
+            </div>
         );
     }
 }

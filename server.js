@@ -81,10 +81,12 @@ app.post("/feedback", async (req, res) => {
         let info = await transporter.sendMail({
             from: '"Crypto Actives" <javlon@encompass.uz>', // sender address
             to: "jbutabaev@gmail.com, trader_188@list.ru, butabaev.o@gmail.com", // list of receivers
-            subject: `${req.body.subject}`, // Subject line
+            subject: `${req.body.subject ||
+                "Qayta aloqa formasidan yangi xabar"}`, // Subject line
             html: ` <h1>Qayta aloqa formasidan yangi xabar</h1>
-                        <h3>${req.body.lastName}, ${req.body.firstName}</h3>
+                        <h3>Shaxs haqidagi ma'lumotlar</h3>
                         <ul>
+                            <li>Ismi: ${req.body.lastName}, ${req.body.firstName}</li>
                             <li>Elektron manzil: ${req.body.email}</li>
                             <li>Telefon raqami: ${req.body.phone}</li>
                             <li>Xabar: ${req.body.message}</li>
