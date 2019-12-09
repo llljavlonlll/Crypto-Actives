@@ -32,7 +32,7 @@ class App extends React.Component {
             amountBeforeBonus = parseFloat(value) * this.props.wmzToUZS || 0;
         }
 
-        let receiveAmount = amountBeforeBonus * 1.02;
+        let receiveAmount = amountBeforeBonus * 0.98;
 
         this.setState({
             amountToExchange: value,
@@ -62,7 +62,7 @@ class App extends React.Component {
                 0;
         }
 
-        let receiveAmount = amountBeforeBonus * 1.02;
+        let receiveAmount = amountBeforeBonus * 0.98;
 
         this.setState({
             currency: value,
@@ -90,7 +90,7 @@ class App extends React.Component {
             amountBeforeBonus = parseFloat(this.state.amountToExchange) || 0;
         }
 
-        let receiveAmount = amountBeforeBonus * 1.02;
+        let receiveAmount = amountBeforeBonus * 0.98;
 
         this.setState({
             exchangeCurrency: value,
@@ -277,38 +277,16 @@ class App extends React.Component {
                                                 name="cardNum"
                                             ></Input>
                                         </FormGroup>
-                                        <div className="detailed-pay">
-                                            <p className="total">
-                                                Summa:{" "}
-                                                <span>
-                                                    {numeral(
-                                                        this.state
-                                                            .amountBeforeBonus
-                                                    ).format("0,0") || "0"}{" "}
-                                                    So'm
-                                                </span>
-                                            </p>
-                                            <p className="total">
-                                                Bonus <strong>(+2%)</strong>:{" "}
-                                                <span>
-                                                    {numeral(
-                                                        this.state
-                                                            .amountBeforeBonus *
-                                                            0.02
-                                                    ).format("0,0") || "0"}{" "}
-                                                    So'm
-                                                </span>
-                                            </p>
-                                            <p className="total">
-                                                Jami olasiz:{" "}
-                                                <span className="total-amount">
-                                                    {numeral(
-                                                        this.state.receiveAmount
-                                                    ).format("0,0") || "0"}{" "}
-                                                    So'm
-                                                </span>
-                                            </p>
-                                        </div>
+
+                                        <p className="total">
+                                            Jami olasiz:{" "}
+                                            <span className="total-amount">
+                                                {numeral(
+                                                    this.state.receiveAmount
+                                                ).format("0,0") || "0"}{" "}
+                                                So'm
+                                            </span>
+                                        </p>
                                     </div>
                                 </div>
                                 <div

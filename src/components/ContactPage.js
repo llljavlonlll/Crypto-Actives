@@ -82,7 +82,7 @@ class ContactPage extends React.Component {
                 <Row>
                     <Col sm="12" lg="6">
                         <h1>
-                            <strong>Aloqa ma'lumotlari</strong>
+                            <strong>Biz bilan bog'laning</strong>
                         </h1>
                         <div className="contact-details">
                             <p>
@@ -113,7 +113,7 @@ class ContactPage extends React.Component {
                     </Col>
                     <Col sm="12" lg="6">
                         <h1>
-                            <strong>Biz bilan bog'laning</strong>
+                            <strong>Aloqa formasi</strong>
                         </h1>
                         <Form
                             className="contact-form"

@@ -12,7 +12,7 @@ class App extends React.Component {
     state = {
         btcRateUSD: null,
         btcRateUZS: null,
-        wmzToUZS: 9600,
+        wmzToUZS: 9500,
         err: null
     };
     componentDidMount() {
