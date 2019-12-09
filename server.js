@@ -88,7 +88,6 @@ app.post("/feedback", async (req, res) => {
                             <li>Elektron manzil: ${req.body.email}</li>
                             <li>Telefon raqami: ${req.body.phone}</li>
                             <li>Xabar: ${req.body.message}</li>
-                            
                         </ul>`
         });
 

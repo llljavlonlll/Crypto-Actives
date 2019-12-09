@@ -1,5 +1,6 @@
 import React from "react";
 import Recaptcha from "react-recaptcha";
+import ReactLoading from "react-loading";
 import {
     Container,
     Row,
@@ -10,14 +11,19 @@ import {
     Input,
     Button
 } from "reactstrap";
+import axios from "axios";
 
 class ContactPage extends React.Component {
     state = {
-        isVerified: false
+        isVerified: false,
+        captchaLoading: true,
+        err: undefined
     };
 
     handleCaptchaLoaded = () => {
-        console.log("Captcha loaded");
+        this.setState({
+            captchaLoading: false
+        });
     };
 
     handleVerify = res => {
@@ -30,6 +36,14 @@ class ContactPage extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
+        if (this.state.isVerified) {
+            axios
+                .post("/feedback", {})
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => console.log(err.message));
+        }
     };
 
     render() {
@@ -109,6 +123,13 @@ class ContactPage extends React.Component {
                                 ></Input>
                             </FormGroup>
                             <div className="captcha">
+                                {this.state.captchaLoading && (
+                                    <ReactLoading
+                                        type={"spin"}
+                                        color={"blue"}
+                                        height={78}
+                                    />
+                                )}
                                 <Recaptcha
                                     sitekey="6LcyxcYUAAAAALM1ms1_RFEA90JhiBhfZvImCioH"
                                     render="explicit"
