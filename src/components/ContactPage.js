@@ -96,8 +96,8 @@ class ContactPage extends React.Component {
                                 <strong>Email:</strong> butabaev.o@gmail.com
                             </p>
                             <p>
-                                <strong>Manzil:</strong> Crypto Actives, 150700,
-                                Uzbekiston Toshkent sh., Istiqlol k., 16a-uy
+                                <strong>Manzil:</strong> Crypto Actives, 150701,
+                                Uzbekiston Qo'qon sh., Istiqlol k., 16a-uy
                             </p>
                         </div>
                         <div className="office-photo">
