@@ -10,26 +10,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "build")));
 
+// create reusable transporter object using the default SMTP transport
+let transporter = nodemailer.createTransport({
+    host: "mail.encompass.uz",
+    port: 465,
+    secure: true, // true for 465, false for other ports
+    auth: {
+        user: "javlon@encompass.uz", // username
+        pass: "Ilw1ias5" // password
+    }
+});
+
 app.post("/send-order", async (req, res) => {
-    console.log(req.body);
-
     try {
-        // create reusable transporter object using the default SMTP transport
-        let transporter = nodemailer.createTransport({
-            host: "mail.encompass.uz",
-            port: 465,
-            secure: true, // true for 465, false for other ports
-            auth: {
-                user: "javlon@encompass.uz", // username
-                pass: "Ilw1ias5" // password
-            }
-        });
-
         // trader_188@list.ru, butabaev.o@gmail.com
         // send mail with defined transport object
         let info = await transporter.sendMail({
             from: '"Crypto Actives" <javlon@encompass.uz>', // sender address
-            to: "jbutabaev@gmail.com", // list of receivers
+            to: "jbutabaev@gmail.com, trader_188@list.ru, butabaev.o@gmail.com", // list of receivers
             subject: "Yangi Buyurtma", // Subject line
             html: ` <h1>Yangi Buyurtma</h1>
                     <h3>Buyurtma ma'lumotlari</h3>
@@ -67,6 +65,31 @@ app.post("/send-order", async (req, res) => {
                             req.body.wmzToUZS
                         ).format("0,0.00")} UZS</li>
                     </ul>`
+        });
+
+        console.log("Message sent: %s", info.messageId);
+        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+        res.sendFile(path.join(__dirname, "build", "index.html"));
+    } catch (err) {
+        console.log(err.message);
+    }
+});
+
+app.post("/feedback", async (req, res) => {
+    try {
+        let info = await transporter.sendMail({
+            from: '"Crypto Actives" <javlon@encompass.uz>', // sender address
+            to: "jbutabaev@gmail.com, trader_188@list.ru, butabaev.o@gmail.com", // list of receivers
+            subject: `${req.body.subject}`, // Subject line
+            html: ` <h1>Qayta aloqa formasidan yangi xabar</h1>
+                        <h3>${req.body.lastName}, ${req.body.firstName}</h3>
+                        <ul>
+                            <li>Elektron manzil: ${req.body.email}</li>
+                            <li>Telefon raqami: ${req.body.phone}</li>
+                            <li>Xabar: ${req.body.message}</li>
+                            
+                        </ul>`
         });
 
         console.log("Message sent: %s", info.messageId);
