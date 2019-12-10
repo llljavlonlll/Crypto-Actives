@@ -24,15 +24,16 @@ class App extends React.Component {
 
     onChangeAmount = event => {
         const value = event.target.value;
-        let amountBeforeBonus = null;
+        let amountBeforeBonus;
+        let receiveAmount;
 
         if (this.state.currency === "BTC") {
             amountBeforeBonus = parseFloat(value) * this.props.btcRateUZS || 0;
+            receiveAmount = amountBeforeBonus * 0.98;
         } else if (this.state.currency === "WMZ") {
             amountBeforeBonus = parseFloat(value) * this.props.wmzToUZS || 0;
+            receiveAmount = amountBeforeBonus;
         }
-
-        let receiveAmount = amountBeforeBonus * 0.98;
 
         this.setState({
             amountToExchange: value,
@@ -50,19 +51,20 @@ class App extends React.Component {
 
     onChangeCurrency = event => {
         const value = event.target.value;
-        let amountBeforeBonus = null;
+        let amountBeforeBonus;
+        let receiveAmount;
 
         if (value === "BTC") {
             amountBeforeBonus =
                 parseFloat(this.state.amountToExchange) *
                     this.props.btcRateUZS || 0;
+            receiveAmount = amountBeforeBonus * 0.98;
         } else if (value === "WMZ") {
             amountBeforeBonus =
                 parseFloat(this.state.amountToExchange) * this.props.wmzToUZS ||
                 0;
+            receiveAmount = amountBeforeBonus;
         }
-
-        let receiveAmount = amountBeforeBonus * 0.98;
 
         this.setState({
             currency: value,
@@ -80,17 +82,36 @@ class App extends React.Component {
 
     onChangeExchangeCurrency = event => {
         const value = event.target.value;
-        let amountBeforeBonus = null;
+        let amountBeforeBonus;
+        let receiveAmount;
 
         if (value === "UZS") {
-            amountBeforeBonus =
-                parseFloat(this.state.amountToExchange) *
-                    this.props.btcRateUZS || 0;
+            if (this.state.currency === "BTC") {
+                amountBeforeBonus =
+                    parseFloat(this.state.amountToExchange) *
+                        this.props.btcRateUZS || 0;
+                receiveAmount = amountBeforeBonus * 0.98;
+            } else if (this.state.currency === "WMZ") {
+                amountBeforeBonus =
+                    parseFloat(this.state.amountToExchange) *
+                        this.props.wmzToUZS || 0;
+                receiveAmount = amountBeforeBonus;
+            }
         } else if (value === "USD") {
-            amountBeforeBonus = parseFloat(this.state.amountToExchange) || 0;
-        }
+            if (this.state.currency === "BTC") {
+                amountBeforeBonus =
+                    parseFloat(this.state.amountToExchange) *
+                        this.props.btcRateUSD || 0;
+                receiveAmount = amountBeforeBonus * 0.98;
+            } else if (this.state.currency === "WMZ") {
+                // amountBeforeBonus =
+                //     parseFloat(this.state.amountToExchange) *
+                //         this.props.wmzToUSD || 0;
+                // receiveAmount = amountBeforeBonus;
 
-        let receiveAmount = amountBeforeBonus * 0.98;
+                receiveAmount = this.state.amountToExchange;
+            }
+        }
 
         this.setState({
             exchangeCurrency: value,

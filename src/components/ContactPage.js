@@ -7,7 +7,6 @@ import {
     Col,
     Form,
     FormGroup,
-    Label,
     Input,
     Button
 } from "reactstrap";
@@ -78,7 +77,7 @@ class ContactPage extends React.Component {
 
     render() {
         return (
-            <div className="container">
+            <Container>
                 <Row>
                     <Col sm="12" lg="6">
                         <h1>
@@ -232,7 +231,7 @@ class ContactPage extends React.Component {
                         ></iframe>
                     </div>
                 </Row>
-            </div>
+            </Container>
         );
     }
 }

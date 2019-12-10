@@ -5,6 +5,7 @@ import ExchangeToUZS from "./components/ExchangeToUZS";
 import ContactPage from "./components/ContactPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import keys from "./keys/keys";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 
@@ -12,7 +13,7 @@ class App extends React.Component {
     state = {
         btcRateUSD: null,
         btcRateUZS: null,
-        wmzToUZS: 9500,
+        wmzToUZS: null,
         err: null
     };
     componentDidMount() {
@@ -22,6 +23,21 @@ class App extends React.Component {
                 this.setState({
                     btcRateUSD: response.data.bpi.USD.rate_float,
                     btcRateUZS: response.data.bpi.UZS.rate_float
+                });
+            })
+            .catch(err => {
+                this.setState({
+                    err: err.message
+                });
+            });
+
+        axios
+            .get(
+                `https://openexchangerates.org/api/latest.json?app_id=${keys.OPEN_EXCHANGE_API}&base=USD&symbols=UZS&prettyprint=true`
+            )
+            .then(response => {
+                this.setState({
+                    wmzToUZS: response.data.rates.UZS
                 });
             })
             .catch(err => {
