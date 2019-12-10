@@ -5,7 +5,6 @@ import ExchangeToUZS from "./components/ExchangeToUZS";
 import ContactPage from "./components/ContactPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import keys from "./keys/keys";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 
@@ -33,7 +32,7 @@ class App extends React.Component {
 
         axios
             .get(
-                `https://openexchangerates.org/api/latest.json?app_id=${keys.OPEN_EXCHANGE_API}&base=USD&symbols=UZS&prettyprint=true`
+                `https://openexchangerates.org/api/latest.json?app_id=${process.env.REACT_APP_OPEN_EXCHANGE_API}&base=USD&symbols=UZS&prettyprint=true`
             )
             .then(response => {
                 this.setState({
