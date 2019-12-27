@@ -19,4 +19,24 @@ bot.onText(/\/subscribe/, msg => {
     }
 });
 
+bot.onText(/\/unsubscribe/, msg => {
+    let chatIds = [];
+
+    if (!!fs.readFileSync("botSubscribersList", "utf-8")) {
+        chatIds = fs
+            .readFileSync("botSubscribersList", "utf-8")
+            .split(",")
+            .filter(subscriber => {
+                return parseInt(subscriber) !== msg.chat.id;
+            });
+
+        // Write new array to the file
+        fs.writeFileSync("botSubscribersList", chatIds);
+
+        bot.sendMessage(msg.chat.id, "You have been unsubscribed!");
+    } else {
+        bot.sendMessage(msg.chat.id, "You have been unsubscribed!");
+    }
+});
+
 module.exports = bot;
