@@ -107,42 +107,71 @@ class App extends React.Component {
         this.setState({
             submitLoading: true
         });
-        axios
-            .post("/send-order", {
-                phone: this.state.phone,
-                currency: this.state.currency,
-                paymentMethod: this.state.paymentMethod,
-                amountToExchange: this.state.amountToExchange,
-                exchangeCurrency: this.state.exchangeCurrency,
-                walletNum: this.state.walletNum,
-                btcRateUZS: this.props.btcRateUZS,
-                btcRateUSD: this.props.btcRateUSD,
-                wmzToUZS: this.props.wmzToUZS,
-                receiveAmount: this.state.receiveAmount
-            })
-            .then(res => {
-                if (res.status === 200) {
-                    this.setState({
-                        receiveAmount: 0,
-                        exchangeCurrency: "BTC",
-                        amountToExchange: "",
-                        err: null,
-                        walletNum: "",
-                        currency: "UZS",
-                        paymentMethod: "cash",
-                        phone: "",
-                        submitLoading: false
-                    });
-                }
+        // axios
+        //     .post("/send-order", {
+        //         phone: this.state.phone,
+        //         currency: this.state.currency,
+        //         paymentMethod: this.state.paymentMethod,
+        //         amountToExchange: this.state.amountToExchange,
+        //         exchangeCurrency: this.state.exchangeCurrency,
+        //         walletNum: this.state.walletNum,
+        //         btcRateUZS: this.props.btcRateUZS,
+        //         btcRateUSD: this.props.btcRateUSD,
+        //         wmzToUZS: this.props.wmzToUZS,
+        //         receiveAmount: this.state.receiveAmount
+        //     })
+        //     .then(res => {
+        //         if (res.status === 200) {
+        //             this.setState({
+        //                 receiveAmount: 0,
+        //                 exchangeCurrency: "BTC",
+        //                 amountToExchange: "",
+        //                 err: null,
+        //                 walletNum: "",
+        //                 currency: "UZS",
+        //                 paymentMethod: "cash",
+        //                 phone: "",
+        //                 submitLoading: false
+        //             });
+        //         }
 
-                this.openModal();
-            })
-            .catch(err => {
-                this.setState({
-                    submitLoading: false
-                });
-                console.log(err.message);
-            });
+        //         this.openModal();
+        //     })
+        //     .catch(err => {
+        //         this.setState({
+        //             submitLoading: false
+        //         });
+        //         console.log(err.message);
+        //     });
+
+        axios.post("https://app.form2chat.io/f/322f1088.json", {
+            phone: this.state.phone,
+            currency: this.state.currency,
+            paymentMethod: this.state.paymentMethod,
+            amountToExchange: this.state.amountToExchange,
+            exchangeCurrency: this.state.exchangeCurrency,
+            walletNum: this.state.walletNum,
+            btcRateUZS: this.props.btcRateUZS,
+            btcRateUSD: this.props.btcRateUSD,
+            wmzToUZS: this.props.wmzToUZS,
+            receiveAmount: this.state.receiveAmount
+        });
+
+        this.setState({
+            receiveAmount: 0,
+            exchangeCurrency: "BTC",
+            amountToExchange: "",
+            err: null,
+            walletNum: "",
+            currency: "UZS",
+            paymentMethod: "cash",
+            phone: "",
+            submitLoading: false
+        });
+
+        this.openModal();
+
+        console.log("Message sent to Telegram");
     };
 
     openModal = () => {
@@ -329,6 +358,7 @@ class App extends React.Component {
                                 isOpen={this.state.modalIsOpen}
                                 onAfterOpen={this.afterOpenModal}
                                 onRequestClose={this.closeModal}
+                                ariaHideApp={false}
                                 style={{
                                     content: {
                                         color: "white",
