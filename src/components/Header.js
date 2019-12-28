@@ -59,6 +59,11 @@ class Header extends React.Component {
                             </Link>
                         </li>
                         <li>
+                            <Link to="/paymobile" activeClassName="selected">
+                                Paymobile
+                            </Link>
+                        </li>
+                        <li>
                             <Link to="/contact" activeClassName="selected">
                                 Aloqa
                             </Link>
@@ -91,6 +96,15 @@ class Header extends React.Component {
                                     onClick={this.toggleMenu}
                                 >
                                     Sotish
+                                </Link>
+                            </NavItem>
+                            <NavItem>
+                                <Link
+                                    to="/paymobile"
+                                    activeClassName="selected"
+                                    onClick={this.toggleMenu}
+                                >
+                                    Paymobile
                                 </Link>
                             </NavItem>
                             <NavItem>

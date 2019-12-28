@@ -1,11 +1,13 @@
 import React from "react";
 import axios from "axios";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
 import ExchangeToBTC from "./components/ExchangeToBTC";
 import ExchangeToUZS from "./components/ExchangeToUZS";
+import Playmobile from "./components/Paymobile";
 import ContactPage from "./components/ContactPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 
 class App extends React.Component {
@@ -32,7 +34,7 @@ class App extends React.Component {
 
         axios
             .get(
-                `https://openexchangerates.org/api/latest.json?app_id=${process.env.REACT_APP_OPEN_EXCHANGE_API}&base=USD&symbols=UZS&prettyprint=true`
+                `https://openexchangerates.org/api/latest.json?app_id=47d1cc1a479f434cb22c7ddecd8bc3b1&base=USD&symbols=UZS&prettyprint=true`
             )
             .then(response => {
                 this.setState({
@@ -57,6 +59,9 @@ class App extends React.Component {
                         </Route>
                         <Route path="/sell">
                             <ExchangeToUZS {...this.state} />
+                        </Route>
+                        <Route exact path="/paymobile">
+                            <Playmobile {...this.state} />
                         </Route>
                         <Route path="/contact">
                             <ContactPage />
