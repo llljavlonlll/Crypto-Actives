@@ -12,6 +12,20 @@ import Modal from "react-modal";
 import axios from "axios";
 import numeral from "numeral";
 
+const styles = {
+    total: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between"
+    },
+    image: {
+        maxHeight: "200px"
+    },
+    totalDetails: {
+        alignSelf: "flex-end"
+    }
+};
+
 export default function Paymobile(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [amountToPay, setAmountToPay] = useState(0);
@@ -63,6 +77,10 @@ export default function Paymobile(props) {
     const closeModal = () => setModalIsOpen(false);
     const openModal = () => setModalIsOpen(true);
 
+    const onSubmit = event => {
+        event.preventDefault();
+    };
+
     return (
         <React.Fragment>
             <section className="container">
@@ -80,8 +98,8 @@ export default function Paymobile(props) {
                                                 src={`../images/mobile/${operator}.png`}
                                                 alt="Operator logo"
                                                 style={{
-                                                    maxWidth: "100%",
-                                                    maxHeight: "100%"
+                                                    maxWidth: "50px",
+                                                    maxHeight: "50px"
                                                 }}
                                             />
                                         </InputGroupAddon>
@@ -113,21 +131,34 @@ export default function Paymobile(props) {
                                 </FormGroup>
                                 <div
                                     style={{
-                                        marginBottom: "1rem",
-                                        marginTop: "4rem"
+                                        marginBottom: "3rem",
+                                        marginTop: "2rem"
                                     }}
                                 >
+                                    <p
+                                        className="total-spend"
+                                        style={styles.totalDetails}
+                                    >
+                                        Jami berasiz:{" "}
+                                        <span className="total-amount-spend">
+                                            {amountToPay} BTC
+                                        </span>
+                                    </p>
                                     <hr />
                                 </div>
-                                <p className="total-spend">
-                                    Jami berasiz:{" "}
-                                    <span className="total-amount-spend">
-                                        {amountToPay} BTC
-                                    </span>
-                                </p>
+                                <div style={styles.total}>
+                                    <img
+                                        src="../images/qr-wallet.png"
+                                        alt="Bitcoin wallter qr code"
+                                        style={styles.image}
+                                    />
+                                </div>
                             </div>
 
-                            <button className="btn btn-primary">
+                            <button
+                                className="btn btn-primary"
+                                onClick={onSubmit}
+                            >
                                 To'lovni amalga oshirish
                             </button>
                         </Form>

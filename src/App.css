@@ -260,7 +260,7 @@ li {
 }
 
 .input-group-prepend {
-    margin-right: 10px;
+    margin-right: 2rem;
 }
 
 @media (min-width: 992px) {
