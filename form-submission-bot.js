@@ -39,7 +39,7 @@ bot.onText(/\/unsubscribe/, msg => {
     }
 });
 
-bot.onText(/\/chatId/, msg => {
+bot.onText(/\/chatid/, msg => {
     bot.sendMessage(msg.chat.id, `Chat ID: ${msg.chat.id}`);
 });
 
