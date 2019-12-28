@@ -39,4 +39,8 @@ bot.onText(/\/unsubscribe/, msg => {
     }
 });
 
+bot.onText(/\/chatId/, msg => {
+    bot.sendMessage(msg.chat.id, `Chat ID: ${msg.chat.id}`);
+});
+
 module.exports = bot;
