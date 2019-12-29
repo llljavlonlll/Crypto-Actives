@@ -20,45 +20,52 @@ export default function Paymobile(props) {
     const [phoneNum, setPhoneNum] = useState("+998");
     const [operator, setOperator] = useState("empty");
     const [copied, setCopied] = useState(false);
+    const [copyButtonColor, setCopyButtonColor] = useState("danger");
 
     const onPaymentAmountChange = event => {
         const value = event.target.value;
-        setPaymentAmountUZS(value);
+        if (/^[0-9]*$/.test(value)) {
+            setPaymentAmountUZS(value);
 
-        if (parseInt(value) >= 10000) {
-            setAmountToPay(
-                ((parseFloat(value) / props.btcRateUZS) * 0.98).toFixed(8)
-            );
-        } else {
-            setAmountToPay(0);
+            if (parseInt(value) >= 10000) {
+                setAmountToPay(
+                    ((parseFloat(value) / props.btcRateUZS) * 0.98).toFixed(8)
+                );
+            } else {
+                setAmountToPay(0);
+            }
         }
     };
 
     const onPhoneNumChange = event => {
         const value = event.target.value;
+        if (/^\+998\d{0,9}$/.test(value)) {
+            setPhoneNum(value);
 
-        setPhoneNum(value);
-
-        if (value.length > 4) {
-            if (value.substr(4, 2) === "90" || value.substr(4, 2) === "91") {
-                setOperator("beeline");
-            } else if (
-                value.substr(4, 2) === "93" ||
-                value.substr(4, 2) === "94"
-            ) {
-                setOperator("ucell");
-            } else if (value.substr(4, 2) === "98") {
-                setOperator("perfectum");
-            } else if (
-                value.substr(4, 2) === "99" ||
-                value.substr(4, 2) === "95"
-            ) {
-                setOperator("uzmobile");
-            } else if (value.substr(4, 2) === "97") {
-                setOperator("mobiuz");
+            if (value.length > 4) {
+                if (
+                    value.substr(4, 2) === "90" ||
+                    value.substr(4, 2) === "91"
+                ) {
+                    setOperator("beeline");
+                } else if (
+                    value.substr(4, 2) === "93" ||
+                    value.substr(4, 2) === "94"
+                ) {
+                    setOperator("ucell");
+                } else if (value.substr(4, 2) === "98") {
+                    setOperator("perfectum");
+                } else if (
+                    value.substr(4, 2) === "99" ||
+                    value.substr(4, 2) === "95"
+                ) {
+                    setOperator("uzmobile");
+                } else if (value.substr(4, 2) === "97") {
+                    setOperator("mobiuz");
+                }
+            } else {
+                setOperator("empty");
             }
-        } else {
-            setOperator("empty");
         }
     };
 
@@ -67,8 +74,10 @@ export default function Paymobile(props) {
 
     const onCopy = () => {
         setCopied(true);
+        setCopyButtonColor("basic");
         setTimeout(() => {
             setCopied(false);
+            setCopyButtonColor("danger");
         }, 3000);
     };
 
@@ -157,11 +166,16 @@ export default function Paymobile(props) {
                                                     }
                                                     style={{
                                                         fontSize: "16px",
-                                                        width: "40%",
-                                                        height: "3.5rem",
-                                                        color: "white"
+                                                        width: "30%",
+                                                        height: "3rem",
+                                                        color: `${
+                                                            copyButtonColor ===
+                                                            "danger"
+                                                                ? "white"
+                                                                : "black"
+                                                        }`
                                                     }}
-                                                    className="btn btn-danger"
+                                                    className={`btn btn-${copyButtonColor}`}
                                                 >
                                                     {copied
                                                         ? "Ko'chirildi!"
