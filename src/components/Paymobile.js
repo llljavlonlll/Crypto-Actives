@@ -8,23 +8,10 @@ import {
     InputGroupAddon
 } from "reactstrap";
 import ReactLoading from "react-loading";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import Modal from "react-modal";
 import axios from "axios";
 import numeral from "numeral";
-
-const styles = {
-    total: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between"
-    },
-    image: {
-        maxHeight: "200px"
-    },
-    totalDetails: {
-        alignSelf: "flex-end"
-    }
-};
 
 export default function Paymobile(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -32,6 +19,7 @@ export default function Paymobile(props) {
     const [paymentAmountUZS, setPaymentAmountUZS] = useState("");
     const [phoneNum, setPhoneNum] = useState("+998");
     const [operator, setOperator] = useState("empty");
+    const [copied, setCopied] = useState(false);
 
     const onPaymentAmountChange = event => {
         const value = event.target.value;
@@ -76,6 +64,13 @@ export default function Paymobile(props) {
 
     const closeModal = () => setModalIsOpen(false);
     const openModal = () => setModalIsOpen(true);
+
+    const onCopy = () => {
+        setCopied(true);
+        setTimeout(() => {
+            setCopied(false);
+        }, 3000);
+    };
 
     const onSubmit = event => {
         event.preventDefault();
@@ -131,14 +126,11 @@ export default function Paymobile(props) {
                                 </FormGroup>
                                 <div
                                     style={{
-                                        marginBottom: "3rem",
-                                        marginTop: "2rem"
+                                        marginBottom: "2rem",
+                                        marginTop: "1rem"
                                     }}
                                 >
-                                    <p
-                                        className="total-spend"
-                                        style={styles.totalDetails}
-                                    >
+                                    <p className="total-spend">
                                         Jami berasiz:{" "}
                                         <span className="total-amount-spend">
                                             {amountToPay} BTC
@@ -146,11 +138,42 @@ export default function Paymobile(props) {
                                     </p>
                                     <hr />
                                 </div>
-                                <div style={styles.total}>
+                                <div className="walletContainer">
+                                    <div className="walletNumContainer">
+                                        <div style={{ fontWeight: "bold" }}>
+                                            Bitcoin hamyon raqami
+                                        </div>
+                                        <div className="walletNum">
+                                            <div>
+                                                3FgjkbujeTtNGRcPFKunbv2cWr4N85LfaW
+                                            </div>
+                                            <CopyToClipboard
+                                                text="3FgjkbujeTtNGRcPFKunbv2cWr4N85LfaW"
+                                                onCopy={onCopy}
+                                            >
+                                                <button
+                                                    onClick={event =>
+                                                        event.preventDefault()
+                                                    }
+                                                    style={{
+                                                        fontSize: "16px",
+                                                        width: "40%",
+                                                        height: "3.5rem",
+                                                        color: "white"
+                                                    }}
+                                                    className="btn btn-danger"
+                                                >
+                                                    {copied
+                                                        ? "Ko'chirildi!"
+                                                        : "Ko'chirish"}
+                                                </button>
+                                            </CopyToClipboard>
+                                        </div>
+                                    </div>
                                     <img
                                         src="../images/qr-wallet.png"
                                         alt="Bitcoin wallter qr code"
-                                        style={styles.image}
+                                        className="walletImage"
                                     />
                                 </div>
                             </div>
