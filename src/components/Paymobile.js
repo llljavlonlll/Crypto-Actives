@@ -12,6 +12,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import Modal from "react-modal";
 import axios from "axios";
 import numeral from "numeral";
+import Loading from "react-loading";
 
 export default function Paymobile(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -21,6 +22,7 @@ export default function Paymobile(props) {
     const [operator, setOperator] = useState("empty");
     const [copied, setCopied] = useState(false);
     const [copyButtonColor, setCopyButtonColor] = useState("danger");
+    const [loading, setLoading] = useState(false);
 
     const onPaymentAmountChange = event => {
         const value = event.target.value;
@@ -29,7 +31,7 @@ export default function Paymobile(props) {
 
             if (parseInt(value) >= 10000) {
                 setAmountToPay(
-                    ((parseFloat(value) / props.btcRateUZS) * 0.98).toFixed(8)
+                    ((parseFloat(value) / props.btcRateUZS) * 0.95).toFixed(8)
                 );
             } else {
                 setAmountToPay(0);
@@ -83,6 +85,32 @@ export default function Paymobile(props) {
 
     const onSubmit = event => {
         event.preventDefault();
+
+        setLoading(true);
+
+        axios
+            .post("/paymobile", {
+                phone: phoneNum,
+                amountToPayUZS: paymentAmountUZS,
+                amountToPayBTC: amountToPay,
+                btcRateUZS: props.btcRateUZS
+            })
+            .then(res => {
+                if (res.status === 200) {
+                    setAmountToPay(0);
+                    setPaymentAmountUZS("");
+                    setPhoneNum("+998");
+                    setOperator("empty");
+                    setCopied(false);
+                    setCopyButtonColor("danger");
+                }
+
+                openModal();
+            })
+            .catch(err => {
+                setLoading(false);
+                console.log(err.message);
+            });
     };
 
     return (

@@ -118,6 +118,40 @@ app.post("/send-order", async (req, res) => {
     }
 });
 
+app.post("/paymobile", (req, res) => {
+    const telegramHtml = `<b>Telefonga pul to'lashga yangi buyurtma</b>
+    <i>Telefon raqami: ${req.body.phone}</i>
+    <i>To'lov miqdori SO'M: ${numeral(req.body.amountToPayUZS).format(
+        "0,0"
+    )}</i>
+    <i>To'lov miqdori BTC: ${numeral(req.body.amountToPayBTC).format(
+        "0,0.000000"
+    )}</i>\n<b>Buyurtma berilgan vaqtdagi kurslar</b>
+    <i>BTC-UZS kursi: 1 BTC - ${numeral(req.body.btcRateUZS).format(
+        "0,0.00"
+    )} UZS</i>`;
+
+    try {
+        // Read subscribers list file and store data into array
+        const subscribers = fs
+            .readFileSync("botSubscribersList")
+            .toString()
+            .split(",");
+
+        // Iterate through the subscribers list array
+        // and send the order details to every subscriber
+        subscribers.forEach(subscriberId =>
+            telegramBot.sendMessage(subscriberId, telegramHtml, {
+                parse_mode: "HTML"
+            })
+        );
+
+        res.sendFile(path.join(__dirname, "build", "index.html"));
+    } catch (err) {
+        console.log(err.message);
+    }
+});
+
 app.post("/feedback", async (req, res) => {
     try {
         let info = await transporter.sendMail({
