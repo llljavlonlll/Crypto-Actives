@@ -29,7 +29,7 @@ export default function Paymobile(props) {
 
             if (parseInt(value) >= 10000) {
                 setAmountToPay(
-                    ((parseFloat(value) / props.btcRateUZS) * 0.95).toFixed(8)
+                    ((parseFloat(value) / props.btcRateUZS) * 1.05).toFixed(8)
                 );
             } else {
                 setAmountToPay(0);
