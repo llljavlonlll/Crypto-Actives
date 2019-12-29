@@ -11,8 +11,6 @@ import ReactLoading from "react-loading";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Modal from "react-modal";
 import axios from "axios";
-import numeral from "numeral";
-import Loading from "react-loading";
 
 export default function Paymobile(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -103,8 +101,8 @@ export default function Paymobile(props) {
                     setOperator("empty");
                     setCopied(false);
                     setCopyButtonColor("danger");
+                    setLoading(false);
                 }
-
                 openModal();
             })
             .catch(err => {
@@ -224,7 +222,16 @@ export default function Paymobile(props) {
                                 className="btn btn-primary"
                                 onClick={onSubmit}
                             >
-                                To'lovni amalga oshirish
+                                {loading ? (
+                                    <ReactLoading
+                                        color={"white"}
+                                        type={"spin"}
+                                        width={"6%"}
+                                        className="spinner"
+                                    />
+                                ) : (
+                                    "To'lovni amalga oshirish"
+                                )}
                             </button>
                         </Form>
 
@@ -262,8 +269,8 @@ export default function Paymobile(props) {
                                     marginBottom: "4rem"
                                 }}
                             >
-                                Siz bilan yaqin orada Telegram orqali
-                                bog'lanamiz
+                                To'lovni amalga oshirganingizdan keyin, 5 daqiqa
+                                ichida mobil mablag'ingiz toldiriladi
                             </h2>
                             <button
                                 onClick={closeModal}
